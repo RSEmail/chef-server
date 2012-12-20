@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-include 'iptables'
+include_recipe "iptables"
 
 #open ssh port
 iptables_rule "open_ssh_port" do
@@ -124,8 +124,8 @@ chef_dirs = [
 chef_dirs.each do |dir|
   directory dir do
     owner "chef"
-    group root_group
-    mode 00755
+    group "chef"
+    mode 0755
     recursive true
   end
 end
