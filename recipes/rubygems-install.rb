@@ -103,7 +103,7 @@ chef_dirs = [
 chef_dirs.each do |dir|
   directory dir do
     owner "chef"
-    group root_group
+    group "chef"
     mode 0755
     recursive true
   end
