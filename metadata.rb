@@ -17,3 +17,4 @@ end
 %w{ runit bluepill daemontools couchdb apache2 nginx openssl zlib xml java gecode erlang }.each do |cb|
   depends cb
 end
+depends "iptables", ">= 0.11.0"

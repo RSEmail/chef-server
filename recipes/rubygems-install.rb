@@ -21,6 +21,16 @@
 # limitations under the License.
 #
 
+include 'iptables'
+
+#open ssh port
+iptables_rule "open_ssh_port" do
+  source "open_port.erb"
+  variables(
+    :port => node["chef_server"]["ssh_port"]
+  )
+end
+
 root_group = value_for_platform(
   "openbsd" => { "default" => "wheel" },
   "freebsd" => { "default" => "wheel" },
@@ -74,9 +84,26 @@ include_recipe "xml"
 server_gems = %w{ chef-server-api chef-solr chef-expander }
 server_services = %w{ chef-solr chef-expander chef-server }
 
+#open api port
+include_recipe 'iptables'
+iptables_rule "chef_server_open_port" do
+  source "open_port.erb"
+  variables(
+    :port => node["chef_server"]["api_port"]
+  )
+end
+
 if node['chef_server']['webui_enabled']
   server_gems << "chef-server-webui"
   server_services << "chef-server-webui"
+
+  #open web port
+  iptables_rule "chef_server_web_open_port" do
+    source "open_port.erb"
+    variables(
+      :port => node["chef_server"]["webui_port"]
+    )
+  end
 end
 
 server_gems.each do |gem|
